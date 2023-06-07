@@ -13,7 +13,6 @@ import Logging
 import SwiftStrava
 import AGCore
 import AGFitCore
-import AGFitnessCore
 
 enum ActivityError: Error {
 	case fitFileNotFound
@@ -64,7 +63,7 @@ public class ActivityStorage {
 				return
 			}
 			
-			guard let activityFileURL = AGActivityFile.activitiesDirectoryURL?.appending(component: filename) else {
+			guard let activityFileURL = ActivityStorage.activitiesDirectoryURL?.appending(component: filename) else {
 				logger.debug("activity generated url is nil. bad path for \(filename)")
 				return
 			}
@@ -85,11 +84,11 @@ public class ActivityStorage {
 			throw ActivityError.fitFileNotFound
 		}
 		
-		guard let activityFileURL = AGActivityFile.activityURL(from: url) else {
+		guard let activityFileURL = ActivityStorage.activityURL(from: url) else {
 			throw ActivityError.fitFileNotFound
 		}
 		
-		if AGActivityFile.activityExists(from: url) {
+		if ActivityStorage.activityExists(from: url) {
 			logger.debug("fit file \(url) already imported stopping.")
 			throw ActivityError.activityExists
 		}
@@ -184,7 +183,7 @@ public class ActivityStorage {
 			return
 		}
 		
-		guard let activityURL = AGActivityFile.activityURL(from: filename) else {
+		guard let activityURL = ActivityStorage.activityURL(from: filename) else {
 			logger.debug("analyseActivity - no url skipping.")
 			return
 		}
@@ -357,3 +356,39 @@ public class ActivityStorage {
 	
 }
 
+extension ActivityStorage {
+	
+	/// Directory location that all fit files are saved into
+	public static var activitiesDirectoryURL: URL? {
+		AGFileManager.documentsSubDirectory(path: "activities")
+	}
+	
+	// MARK: - Import from a URL
+	
+	/// Attempts to generate the activity path url for the passed url
+	/// - Parameter url: the url of activity to potentially import
+	/// - Returns: activity generated url
+	static public func activityURL(from url: URL) -> URL? {
+		
+		let fitFilename = url.lastPathComponent
+		return activityURL(from: fitFilename)
+	}
+	
+	static public func activityURL(from fitFilename: String) -> URL? {
+		
+		guard let activityFileURL = ActivityStorage.activitiesDirectoryURL?.appending(component: fitFilename) else {
+			return nil
+		}
+		return activityFileURL
+	}
+	
+	/// Checks to see if a file at url exists in activity folder with the same base name
+	/// - Parameter url: url of activity to check
+	/// - Returns: true if exists
+	static public func activityExists(from url: URL) -> Bool {
+		guard let activityFileURL = activityURL(from: url) else {
+			return false
+		}
+		return FileManager.default.fileExists(atPath: activityFileURL.path(percentEncoded: false))
+	}
+}

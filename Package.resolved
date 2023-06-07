@@ -6,7 +6,7 @@
       "location" : "https://github.com/antokne/AGCore",
       "state" : {
         "branch" : "develop",
-        "revision" : "1b97fb48381ce2ce4479b0bea9e7593014fc694a"
+        "revision" : "cfdfe0d8441d8799cb2f3859e522218ac1bc1df7"
       }
     },
     {
@@ -15,7 +15,7 @@
       "location" : "https://github.com/antokne/AGFitCore",
       "state" : {
         "branch" : "develop",
-        "revision" : "75a599c1a2766df3c7ee9360a76ff3d8c51b94a3"
+        "revision" : "bcc911426fc13d6532241243c2e9c11550e49409"
       }
     },
     {
