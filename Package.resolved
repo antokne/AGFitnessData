@@ -1,0 +1,86 @@
+{
+  "pins" : [
+    {
+      "identity" : "agcore",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/antokne/AGCore",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "1b97fb48381ce2ce4479b0bea9e7593014fc694a"
+      }
+    },
+    {
+      "identity" : "agfitcore",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/antokne/AGFitCore",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "75a599c1a2766df3c7ee9360a76ff3d8c51b94a3"
+      }
+    },
+    {
+      "identity" : "alamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/Alamofire",
+      "state" : {
+        "revision" : "747c8db8d57b68d5e35275f10c92d55f982adbd4",
+        "version" : "4.9.1"
+      }
+    },
+    {
+      "identity" : "antmessageprotocol",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/FitnessKit/AntMessageProtocol",
+      "state" : {
+        "revision" : "f0350ce0eea3057af8a34b85c0fda25c2052b094",
+        "version" : "1.1.1"
+      }
+    },
+    {
+      "identity" : "datadecoder",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/FitnessKit/DataDecoder",
+      "state" : {
+        "revision" : "8ca8aefc505833d3ca67e6070169472a7103594e",
+        "version" : "5.0.0"
+      }
+    },
+    {
+      "identity" : "fitdataprotocol",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/antokne/FitDataProtocol",
+      "state" : {
+        "branch" : "master",
+        "revision" : "ff94e41b0f6caaf8a7b5aee90a31cea090a17804"
+      }
+    },
+    {
+      "identity" : "fitnessunits",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/FitnessKit/FitnessUnits",
+      "state" : {
+        "revision" : "12af59a7025decf46b7e0a4bb7b1eb480b1c9e5c",
+        "version" : "3.1.0"
+      }
+    },
+    {
+      "identity" : "swift-log",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-log",
+      "state" : {
+        "revision" : "32e8d724467f8fe623624570367e3d50c5638e46",
+        "version" : "1.5.2"
+      }
+    },
+    {
+      "identity" : "swift-strava",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/antokne/swift-strava",
+      "state" : {
+        "branch" : "master",
+        "revision" : "d710bf0d41748f05c6796571dfe736bd5831b9e7"
+      }
+    }
+  ],
+  "version" : 2
+}
