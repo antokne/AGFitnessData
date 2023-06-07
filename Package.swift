@@ -22,7 +22,6 @@ let package = Package(
 		.package(url: "https://github.com/antokne/AGFitCore", branch: "develop"),
 		.package(url: "https://github.com/antokne/swift-strava", branch: "master"),
 		.package(url: "https://github.com/apple/swift-log", .upToNextMajor(from: "1.0.0")),
-		.package(url: "https://github.com/raphaelmor/Polyline.git", .upToNextMajor(from: "5.0.2")),
 	],
 	targets: [
 		// Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -32,7 +31,6 @@ let package = Package(
 			dependencies: [.product(name: "AGCore", package: "AGCore"),
 						   .product(name: "AGFitCore", package: "AGFitCore"),
 						   .product(name: "SwiftStrava", package: "swift-strava"),
-						   .product(name: "Polyline", package: "Polyline"),
 						   .product(name: "Logging", package: "swift-log")],
 			resources: [
 				.process("Resources"),
