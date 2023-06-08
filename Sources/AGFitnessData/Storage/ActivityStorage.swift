@@ -326,7 +326,7 @@ public class ActivityStorage {
 		logger.debug("importStrava activity start")
 		
 		// create model record
-		let newActivity = Activity(context: viewContext)
+		let newActivity = Activity(context: context)
 		
 		if let encodedPolyline = activity.map?.summaryPolyline {
 			logger.debug("length of polyline = \(encodedPolyline.count)")
@@ -345,13 +345,13 @@ public class ActivityStorage {
 		
 		// If we can find the bike then update the relationship.
 		if let gearId = activity.gearId,
-		   let bike = Bike.findBike(by: gearId) {
+		   let bike = Bike.findBike(by: gearId, context) {
 			newActivity.bike = bike
 			
 			bike.updateBike(for: newActivity)
 		}
 		
-		PersistenceController.shared.save()
+		try? context.save()
 	}
 	
 }
