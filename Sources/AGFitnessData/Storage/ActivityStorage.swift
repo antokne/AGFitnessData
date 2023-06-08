@@ -41,7 +41,7 @@ public class ActivityStorage {
 	public func add(activity: Activity) -> Bool {
 		
 		do {
-			try viewContext.save()
+			try activity.managedObjectContext?.save()
 		}
 		catch {
 			logger.debug("Failed to add activity \(activity).")
@@ -293,7 +293,7 @@ public class ActivityStorage {
 		logger.info("importStrava activity start")
 
 		// create model record
-		let newActivity = Activity(context: viewContext)
+		let newActivity = Activity(context: context)
 		
 		if let encodedPolyline = activity.map?.summaryPolyline {
 			logger.debug("length of polyline = \(encodedPolyline.count)")
@@ -312,16 +312,16 @@ public class ActivityStorage {
 		
 		// If we can find the bike then update the relationship.
 		if let gearId = activity.gearId,
-			let bike = Bike.findBike(by: gearId) {
+		   let bike = Bike.findBike(by: gearId, context) {
 				newActivity.bike = bike
 			
 			bike.updateBike(for: newActivity)
 		}
 		
-		PersistenceController.shared.save()
+		try? context.save()
 	}
 	
-	public func importStrava(activity: DetailedActivity) throws {
+	public func importStrava(activity: DetailedActivity, context: NSManagedObjectContext = PersistenceController.shared.container.viewContext) throws {
 		
 		logger.debug("importStrava activity start")
 		

@@ -84,6 +84,10 @@ public struct PersistenceController {
 			
 		}
 	}
+
+	public func performInBackground(_ block: @escaping (NSManagedObjectContext) -> Void) {
+		container.performBackgroundTask(block)
+	}
 	
 	public func performInBackground(_ block: @escaping (NSManagedObjectContext) -> Void) async {
 		await container.performBackgroundSaveTask(block)
