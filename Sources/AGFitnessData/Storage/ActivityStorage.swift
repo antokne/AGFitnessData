@@ -23,12 +23,15 @@ enum ActivityError: Error {
 
 public class ActivityStorage {
 	
-	private var logger = Logger(label: "com.antokne.ActivityStorage")
+	private var logger = Logger(label: "ActivityStorage")
 	
 	var viewContext = PersistenceController.shared.container.viewContext
 	
 	// SINGELTON INSTANCE
 	public static let shared: ActivityStorage = ActivityStorage()
+	
+	private static var defaultSubFolder: AGUserDefaultStringValue = AGUserDefaultStringValue(keyName: "activity-folder", defaultValue: "activities")
+	
 	
 	public init() {
 		logger.logLevel = .debug
@@ -358,9 +361,13 @@ public class ActivityStorage {
 
 extension ActivityStorage {
 	
+	static public func setDefault(folder: String) {
+		defaultSubFolder.stringValue = folder
+	}
+	
 	/// Directory location that all fit files are saved into
-	public static var activitiesDirectoryURL: URL? {
-		AGFileManager.documentsSubDirectory(path: "activities")
+	static public var activitiesDirectoryURL: URL? {
+		AGFileManager.documentsSubDirectory(path: defaultSubFolder.stringValue)
 	}
 	
 	// MARK: - Import from a URL
