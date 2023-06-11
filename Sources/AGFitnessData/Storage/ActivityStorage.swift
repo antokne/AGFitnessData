@@ -30,7 +30,9 @@ public class ActivityStorage {
 	// SINGELTON INSTANCE
 	public static let shared: ActivityStorage = ActivityStorage()
 	
-	private static var defaultSubFolder: AGUserDefaultStringValue = AGUserDefaultStringValue(keyName: "activity-folder", defaultValue: "activities")
+//	@AGUserDefaultStringValue private static var defaultSubFolder: String = AGUserDefaultStringValue(keyName: "activity-folder", defaultValue: "activities")
+	
+	@AGUserDefaultStringValue(keyName: "activity-folder", defaultValue: "activities") private static var defaultSubFolder: String
 	
 	
 	public init() {
@@ -362,12 +364,12 @@ public class ActivityStorage {
 extension ActivityStorage {
 	
 	static public func setDefault(folder: String) {
-		defaultSubFolder.stringValue = folder
+		defaultSubFolder = folder
 	}
 	
 	/// Directory location that all fit files are saved into
 	static public var activitiesDirectoryURL: URL? {
-		AGFileManager.documentsSubDirectory(path: defaultSubFolder.stringValue)
+		AGFileManager.documentsSubDirectory(path: defaultSubFolder)
 	}
 	
 	// MARK: - Import from a URL
