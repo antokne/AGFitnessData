@@ -101,7 +101,8 @@ public extension Activity {
 	
 	func set(from session: SessionMessage) {
 		
-		self.name = session.name
+		
+		self.name = session.sport?.stringValue ?? "Activity"
 		self.startDate = session.startTime?.recordDate
 		if let distanceM = session.totalDistance?.value {
 			self.distanceM = distanceM

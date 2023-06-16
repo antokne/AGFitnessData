@@ -20,6 +20,9 @@ enum ActivityError: Error {
 	case failedToCreateActivity
 	case activityExists
 }
+/// post a notification use dict with key "ActivityURL" and value "URL"
+public var ActivityStorageImportActivityWithURLNotification = Notification.Name("ActivityStorageImportActivityWithURLNotification")
+public var ActivityStorageImportActivityURLKey = "ActivityURL"
 
 public class ActivityStorage {
 	
@@ -30,13 +33,16 @@ public class ActivityStorage {
 	// SINGELTON INSTANCE
 	public static let shared: ActivityStorage = ActivityStorage()
 	
-//	@AGUserDefaultStringValue private static var defaultSubFolder: String = AGUserDefaultStringValue(keyName: "activity-folder", defaultValue: "activities")
-	
 	@AGUserDefaultStringValue(keyName: "activity-folder", defaultValue: "activities") private static var defaultSubFolder: String
 	
 	
 	public init() {
 		logger.logLevel = .debug
+		NotificationCenter.default.addObserver(forName: ActivityStorageImportActivityWithURLNotification,
+											   object: nil,
+											   queue: OperationQueue.main) { notification in
+			self.importActivity(notification: notification)
+		}
 	}
 	
 	public init(context: NSManagedObjectContext) {
@@ -80,9 +86,26 @@ public class ActivityStorage {
 		}
 	}
 	
+	private func importActivity(notification: Notification) {
+		
+		guard let activityURL = notification.userInfo?[ActivityStorageImportActivityURLKey] as? URL else {
+			logger.error("import activity notification has no url data, skipping.")
+			return
+		}
+		
+		Task {
+			do {
+				try await importActivity(from: activityURL)
+			}
+			catch {
+				logger.error("import activity failed to import \(activityURL) \(error).")
+			}
+		}
+	}
+	
 	/// Imports a fit activity from fit file
 	/// - Parameter url: the location of the fit file to import
-	public func importActivity(from url: URL) async throws {
+	public func importActivity(from url: URL, inPlace: Bool = false, analyse: Bool = true) async throws {
 		
 		guard FileManager.default.fileExists(atPath: url.path(percentEncoded: false)) == true else {
 			logger.debug("fit file \(url) does not exist stopping.")
@@ -94,8 +117,14 @@ public class ActivityStorage {
 		}
 		
 		if ActivityStorage.activityExists(from: url) {
-			logger.debug("fit file \(url) already imported stopping.")
-			throw ActivityError.activityExists
+			
+			if inPlace {
+				logger.debug("importing inplace fit file \(url).")
+			}
+			else {
+				logger.debug("fit file \(url) already imported stopping.")
+				throw ActivityError.activityExists
+			}
 		}
 		
 		var success = true
@@ -104,11 +133,15 @@ public class ActivityStorage {
 		
 		defer {
 			if !success {
-				logger.error("error adding file \(url) removing file and model record.")
-				logger.error("Removing file \(activityFileURL).")
-
-				if FileManager.default.fileExists(atPath: activityFileURL.path(percentEncoded: false)) {
-					try? FileManager.default.removeItem(at: activityFileURL)
+				
+				// only delete fit file if inplace is false
+				if inPlace == false {
+					logger.error("error adding file \(url) removing file and model record.")
+					logger.error("Removing file \(activityFileURL).")
+					
+					if FileManager.default.fileExists(atPath: activityFileURL.path(percentEncoded: false)) {
+						try? FileManager.default.removeItem(at: activityFileURL)
+					}
 				}
 				
 				if let activity = newActivity {
@@ -147,17 +180,25 @@ public class ActivityStorage {
 			success = false
 		}
 		
-		// copy fit file & set filename
-		do {
-			try FileManager.default.copyItem(at: url, to: activityFileURL)
+		// copy fit file & set filename only if inPlace is false.
+		if inPlace == false {
+			do {
+				try FileManager.default.copyItem(at: url, to: activityFileURL)
+				newActivity.fileName = fitFilename
+			}
+			catch {
+				success = false
+				logger.debug("Failed to copy file \(error).")
+			}
+		}
+		else {
 			newActivity.fileName = fitFilename
 		}
-		catch {
-			success = false
-			logger.debug("Failed to copy file \(error).")
-		}
 
-		await analyseActivity(activity: newActivity)
+		if analyse {
+			logger.debug("analyseActivity...")
+			await analyseActivity(activity: newActivity)
+		}
 	}
 	
 	// MARK: - Update activities looking at fit file data.
