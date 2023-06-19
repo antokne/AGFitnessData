@@ -9,7 +9,7 @@ import Foundation
 import CoreData
 import FitDataProtocol
 import AntMessageProtocol
-import Logging
+import OSLog
 import SwiftStrava
 import AGCore
 import AGFitCore
@@ -26,7 +26,7 @@ public var ActivityStorageImportActivityURLKey = "ActivityURL"
 
 public class ActivityStorage {
 	
-	private var logger = Logger(label: "ActivityStorage")
+	private var logger = Logger(subsystem: "com.antokne.fitnessdata", category: "ActivityStorage")
 	
 	var viewContext = PersistenceController.shared.container.viewContext
 	
@@ -37,7 +37,6 @@ public class ActivityStorage {
 	
 	
 	public init() {
-		logger.logLevel = .debug
 		NotificationCenter.default.addObserver(forName: ActivityStorageImportActivityWithURLNotification,
 											   object: nil,
 											   queue: OperationQueue.main) { notification in

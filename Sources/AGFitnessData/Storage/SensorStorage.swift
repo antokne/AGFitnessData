@@ -6,17 +6,16 @@
 //
 
 import Foundation
-import Logging
+import OSLog
 import FitDataProtocol
 
 public class SensorStorage {
 
 	private var persistenceController: PersistenceController
-	private var logger = Logger(label: "SensorStorage")
+	private var logger = Logger(subsystem: "com.antokne.fitnessdata", category: "SensorStorage")
 
 	public init(persistenceController: PersistenceController = PersistenceController.shared) {
 		self.persistenceController = persistenceController
-		logger.logLevel = .debug
 	}
 	
 	/// For each unique device info message that has a serial no create or update a sensor object
