@@ -8,5 +8,5 @@
 import UniformTypeIdentifiers
 
 public extension UTType {
-	static var fit: UTType { UTType(exportedAs: "garmin.fit") }
+	static var fit: UTType { UTType(exportedAs: "public.fit") }
 }
