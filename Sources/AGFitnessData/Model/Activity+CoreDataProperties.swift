@@ -67,8 +67,12 @@ extension Activity {
 	@NSManaged public func removeFromShareStatus(_ values: NSSet)
 	
 	
-	var activityShareStatus: Set<ActivityShareStatus>? {
+	public var activityShareStatus: Set<ActivityShareStatus>? {
 		shareStatus as? Set<ActivityShareStatus>
+	}
+	
+	public func shareSite(with siteType: ActivityShareStatusSiteType) -> ActivityShareStatus? {
+		activityShareStatus?.first(where: { $0.shareSiteType == siteType })
 	}
 }
 

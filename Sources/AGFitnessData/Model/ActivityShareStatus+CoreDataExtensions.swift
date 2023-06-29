@@ -10,6 +10,13 @@ import CoreData
 
 public enum ActivityShareStatusSiteType: Int16 {
 	case myBikeTraffic = 0
+	
+	var name: String {
+		switch self {
+		case .myBikeTraffic:
+			return "MyBikeTraffic"
+		}
+	}
 }
 
 public enum ActivityShareStatusType: Int16 {
