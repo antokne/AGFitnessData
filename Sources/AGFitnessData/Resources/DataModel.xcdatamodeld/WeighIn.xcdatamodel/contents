@@ -16,6 +16,13 @@
         <attribute name="startOfWeek" optional="YES" transient="YES" attributeType="String"/>
         <attribute name="subSport" optional="YES" attributeType="Integer 16" defaultValueString="7" usesScalarValueType="YES"/>
         <relationship name="bike" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Bike" inverseName="activities" inverseEntity="Bike"/>
+        <relationship name="shareStatus" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ActivityShareStatus" inverseName="activity" inverseEntity="ActivityShareStatus"/>
+    </entity>
+    <entity name="ActivityShareStatus" representedClassName="ActivityShareStatus" elementID="activityShareStatus" syncable="YES" codeGenerationType="class">
+        <attribute name="shareSite" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" elementID="shareSite"/>
+        <attribute name="shareSiteId" optional="YES" attributeType="String" elementID="shareSiteId"/>
+        <attribute name="shareStatus" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" elementID="shareStatus"/>
+        <relationship name="activity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" inverseName="shareStatus" inverseEntity="Activity"/>
     </entity>
     <entity name="Bike" representedClassName="Bike" syncable="YES" codeGenerationType="class">
         <attribute name="brand" optional="YES" attributeType="String"/>

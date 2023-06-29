@@ -32,7 +32,7 @@ extension Activity {
 	@NSManaged public var bike: Bike?
 	@NSManaged public var sourceId: String?
 	@NSManaged public var source: Int16
-
+	@NSManaged public var shareStatus: NSSet?
 	
 	private static var dateFormatter = DateFormatter()
 	
@@ -51,6 +51,26 @@ extension Activity: Identifiable { }
 
 extension Activity: BikeRelationshipProtocol { }
 
+// MARK: Generated accessors for shareStatus
+extension Activity {
+	
+	@objc(addShareStatusObject:)
+	@NSManaged public func addToShareStatus(_ value: ActivityShareStatus)
+	
+	@objc(removeShareStatusObject:)
+	@NSManaged public func removeFromShareStatus(_ value: ActivityShareStatus)
+	
+	@objc(addShareStatus:)
+	@NSManaged public func addToShareStatus(_ values: NSSet)
+	
+	@objc(removeShareStatus:)
+	@NSManaged public func removeFromShareStatus(_ values: NSSet)
+	
+	
+	var activityShareStatus: Set<ActivityShareStatus>? {
+		shareStatus as? Set<ActivityShareStatus>
+	}
+}
 
 public extension Activity {
 	
