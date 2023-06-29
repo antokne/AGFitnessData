@@ -11,10 +11,17 @@ import CoreData
 public enum ActivityShareStatusSiteType: Int16 {
 	case myBikeTraffic = 0
 	
-	var name: String {
+	public var name: String {
 		switch self {
 		case .myBikeTraffic:
 			return "MyBikeTraffic"
+		}
+	}
+	
+	public var viewUrl: URL {
+		switch self {
+		case .myBikeTraffic:
+			return URL(string: "https://www.mybiketraffic.com/rides/view")!
 		}
 	}
 }
@@ -53,4 +60,12 @@ public extension ActivityShareStatus {
 		shareStatus = status.rawValue
 		return self
 	}
+}
+
+extension ActivityShareStatus: Comparable {
+	
+	public static func < (lhs: ActivityShareStatus, rhs: ActivityShareStatus) -> Bool {
+		lhs.shareSiteType?.rawValue ?? 0 < rhs.shareSiteType?.rawValue ?? 0
+	}
+	
 }
