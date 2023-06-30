@@ -14,7 +14,7 @@ public enum ActivityShareStatusSiteType: Int16 {
 	public var name: String {
 		switch self {
 		case .myBikeTraffic:
-			return "MyBikeTraffic"
+			return "MyBikeTraffic.com"
 		}
 	}
 	
