@@ -48,6 +48,13 @@ public class ActivityStorage {
 		self.viewContext = context
 	}
 	
+	public func activityCount() -> Int {
+		var count = 0
+		let fetchRequest = Activity.fetchRequest()
+		count = (try? viewContext.count(for: fetchRequest)) ?? 0
+		return count
+	}
+	
 	public func add(activity: Activity) -> Bool {
 		
 		do {
