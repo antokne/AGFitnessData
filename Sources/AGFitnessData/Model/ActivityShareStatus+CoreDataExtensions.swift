@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreData
+import AGCore
 
 public enum ActivityShareStatusSiteType: Int16 {
 	case myBikeTraffic = 0
@@ -59,6 +60,19 @@ public extension ActivityShareStatus {
 	func setStatusType(status: ActivityShareStatusType) -> ActivityShareStatus {
 		shareStatus = status.rawValue
 		return self
+	}
+	
+	/// Find all share status' that have not completed for some reason
+	/// - Returns: all share status in progress
+	class func findInprogressShareStatuses(_ context: NSManagedObjectContext = PersistenceController.shared.container.viewContext) throws -> [ActivityShareStatus] {
+		let fetchRequest = NSFetchRequest<ActivityShareStatus>(entityName: ActivityShareStatus.className)
+		var subPredicates: [NSPredicate] = []
+		subPredicates.append(\ActivityShareStatus.shareStatus == ActivityShareStatusType.inProgress.rawValue)
+		if subPredicates.count > 0 {
+			fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: subPredicates)
+		}
+		
+		return try context.fetch(fetchRequest)
 	}
 }
 

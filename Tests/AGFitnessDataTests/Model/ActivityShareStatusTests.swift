@@ -84,4 +84,38 @@ final class ActivityShareStatusTests: XCTestCase {
 		XCTAssertTrue(activity.activityShareStatus?.count == 0)
 
 	}
+	
+	func testFindInprogressShares() throws {
+		
+		let persistence = PersistenceController.preview
+		let context = persistence.container.viewContext
+
+		var results = try ActivityShareStatus.findInprogressShareStatuses(context)
+		XCTAssertTrue(results.isEmpty)
+		
+		let activity = Activity(context: context)
+
+		var shareStatus = ActivityShareStatus(context: context)
+		shareStatus.setShareSiteId(id: "erere")
+		shareStatus.setStatusType(status: .completed)
+		activity.addToShareStatus(shareStatus)
+				
+		results = try ActivityShareStatus.findInprogressShareStatuses(context)
+		XCTAssertTrue(results.isEmpty)
+		
+		shareStatus = ActivityShareStatus(context: context)
+		shareStatus.setShareSiteId(id: "another one")
+		shareStatus.setStatusType(status: .inProgress)
+		activity.addToShareStatus(shareStatus)
+				
+		results = try ActivityShareStatus.findInprogressShareStatuses(context)
+		XCTAssertEqual(results.count, 1)
+		XCTAssertEqual(results[0].id, shareStatus.id)
+		
+		shareStatus.setStatusType(status: .failed)
+		
+		results = try ActivityShareStatus.findInprogressShareStatuses(context)
+		XCTAssertTrue(results.isEmpty)
+
+	}
 }
