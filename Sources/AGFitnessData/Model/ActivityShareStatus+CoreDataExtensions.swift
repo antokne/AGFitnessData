@@ -43,12 +43,14 @@ public extension ActivityShareStatus {
 	@discardableResult
 	func setShareSiteType(site: ActivityShareStatusSiteType) -> ActivityShareStatus {
 		shareSite = site.rawValue
+		updatedAt = Date()
 		return self
 	}
 	
 	@discardableResult
 	func setShareSiteId(id: String) -> ActivityShareStatus {
 		shareSiteId = id
+		updatedAt = Date()
 		return self
 	}
 	
@@ -59,6 +61,7 @@ public extension ActivityShareStatus {
 	@discardableResult
 	func setStatusType(status: ActivityShareStatusType) -> ActivityShareStatus {
 		shareStatus = status.rawValue
+		updatedAt = Date()
 		return self
 	}
 	
@@ -73,6 +76,22 @@ public extension ActivityShareStatus {
 		}
 		
 		return try context.fetch(fetchRequest)
+	}
+	
+	/// Attempts to find share statuses with this activity, using the activity managed object context
+	/// - Parameter activity: the activity to file share statuses for
+	/// - Returns: an array of found share statuses.
+	class func findShareStatuses(for activity: Activity) -> [ActivityShareStatus] {
+
+		let fetchRequest = NSFetchRequest<ActivityShareStatus>(entityName: ActivityShareStatus.className)
+		fetchRequest.predicate = \ActivityShareStatus.activity == activity
+		
+		do {
+			return try activity.managedObjectContext?.fetch(fetchRequest) ?? []
+		}
+		catch {
+			return []
+		}
 	}
 }
 
