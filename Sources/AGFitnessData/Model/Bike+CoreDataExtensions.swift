@@ -9,11 +9,17 @@ import Foundation
 import SwiftUI
 import SwiftStrava
 import CoreData
+import AGCore
 
 /// Source that the bike details has come from
 public enum BikeSource: Int16 {
 	case strava = 0
 	case unknown = 1
+}
+
+public enum SortBy {
+	case name
+	case updateDate
 }
 
 /// This maps to strava values currently
@@ -42,11 +48,22 @@ public enum BikeFrameType: Int16 {
 
 public extension Bike {
 	
-	class func sortedFetchRequest() -> NSFetchRequest<Bike> {
+	class func sortedFetchRequest(sortBy: SortBy = .name, count: Int? = nil) -> NSFetchRequest<Bike> {
 		let fetchRequest = NSFetchRequest<Bike>(entityName: "Bike")
-		let sortDescriptor = NSSortDescriptor(keyPath: \Bike.name, ascending: true)
-		fetchRequest.sortDescriptors = [sortDescriptor]
+		if let count {
+			fetchRequest.fetchLimit = count
+		}
+		fetchRequest.sortDescriptors = [sortByKeyPath(sortBy: sortBy)]
 		return fetchRequest
+	}
+	
+	class func sortByKeyPath(sortBy: SortBy) -> NSSortDescriptor {
+		switch sortBy {
+		case .name:
+			NSSortDescriptor(keyPath: \Bike.name, ascending: true)
+		case .updateDate:
+			NSSortDescriptor(keyPath: \Bike.timestamp, ascending: false)
+		}
 	}
 	
 	@discardableResult
@@ -69,6 +86,11 @@ public extension Bike {
 	
 	func getFrameTypeName() -> String? {
 		return BikeFrameType(rawValue: self.frameType)?.name()
+	}
+	
+	var lastUpdateDate: String {
+		guard let timestamp else { return "" }
+		return AGFormatter.sharedFormatter.formatDate(date: timestamp)
 	}
 	
 	/// Go through bike values and see if it has changed from remote (strava)

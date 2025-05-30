@@ -111,10 +111,12 @@ public extension ComponentRule {
 	}
 
 	@discardableResult
-	class func add(name: String,
-				   message: String? = nil,
-				   template: Bool = false,
-				   _ persistenceController: PersistenceController = PersistenceController.shared) -> ComponentRule {
+	class func add(
+        name: String,
+        message: String? = nil,
+        template: Bool = false,
+        _ persistenceController: PersistenceController = PersistenceController.shared
+    ) -> ComponentRule {
 		let newComponentRule = ComponentRule(context: persistenceController.container.viewContext)
 		newComponentRule.name = name
 		newComponentRule.template = template

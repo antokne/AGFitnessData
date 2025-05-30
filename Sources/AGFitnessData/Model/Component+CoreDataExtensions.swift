@@ -166,7 +166,7 @@ public extension Component {
 	class func sortedFetchRequest(bike: Bike? = nil) -> NSFetchRequest<Component> {
 		let fetchRequest = NSFetchRequest<Component>(entityName: "Component")
 		if let bike {
-			fetchRequest.predicate = NSPredicate(format: "(bike == %@) AND (retired == NULL) AND parentComponent == NULL", bike)
+			fetchRequest.predicate = NSPredicate(format: "(bike == %@) AND parentComponent == NULL", bike)
 		}
 		let sortDescriptor = NSSortDescriptor(keyPath: \Component.name, ascending: false)
 		fetchRequest.sortDescriptors = [sortDescriptor]
@@ -176,7 +176,7 @@ public extension Component {
 	class func sortedChildFetchRequest(bike: Bike? = nil) -> NSFetchRequest<Component> {
 		let fetchRequest = NSFetchRequest<Component>(entityName: "Component")
 		if let bike {
-			fetchRequest.predicate = NSPredicate(format: "(bike == %@) AND (retired == NULL) AND parentComponent != NULL", bike)
+			fetchRequest.predicate = NSPredicate(format: "(bike == %@) AND parentComponent != NULL", bike)
 		}
 		let sortDescriptor = NSSortDescriptor(keyPath: \Component.name, ascending: false)
 		fetchRequest.sortDescriptors = [sortDescriptor]
