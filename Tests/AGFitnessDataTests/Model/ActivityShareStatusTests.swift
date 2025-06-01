@@ -90,7 +90,7 @@ final class ActivityShareStatusTests: XCTestCase {
 		let persistence = PersistenceController.preview
 		let context = persistence.container.viewContext
 
-		var results = try ActivityShareStatus.findInprogressShareStatuses(context)
+		var results = try ActivityShareStatus.findInProgressShareStatuses(context)
 		XCTAssertTrue(results.isEmpty)
 		
 		let activity = Activity(context: context)
@@ -100,7 +100,7 @@ final class ActivityShareStatusTests: XCTestCase {
 		shareStatus.setStatusType(status: .completed)
 		activity.addToShareStatus(shareStatus)
 				
-		results = try ActivityShareStatus.findInprogressShareStatuses(context)
+		results = try ActivityShareStatus.findInProgressShareStatuses(context)
 		XCTAssertTrue(results.isEmpty)
 		
 		shareStatus = ActivityShareStatus(context: context)
@@ -108,13 +108,13 @@ final class ActivityShareStatusTests: XCTestCase {
 		shareStatus.setStatusType(status: .inProgress)
 		activity.addToShareStatus(shareStatus)
 				
-		results = try ActivityShareStatus.findInprogressShareStatuses(context)
+		results = try ActivityShareStatus.findInProgressShareStatuses(context)
 		XCTAssertEqual(results.count, 1)
 		XCTAssertEqual(results[0].id, shareStatus.id)
 		
 		shareStatus.setStatusType(status: .failed)
 		
-		results = try ActivityShareStatus.findInprogressShareStatuses(context)
+		results = try ActivityShareStatus.findInProgressShareStatuses(context)
 		XCTAssertTrue(results.isEmpty)
 
 	}

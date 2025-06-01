@@ -67,7 +67,7 @@ public extension ActivityShareStatus {
 	
 	/// Find all share status' that have not completed for some reason
 	/// - Returns: all share status in progress
-	class func findInprogressShareStatuses(_ context: NSManagedObjectContext = PersistenceController.shared.container.viewContext) throws -> [ActivityShareStatus] {
+	class func findInProgressShareStatuses(_ context: NSManagedObjectContext = PersistenceController.shared.container.viewContext) throws -> [ActivityShareStatus] {
 		let fetchRequest = NSFetchRequest<ActivityShareStatus>(entityName: ActivityShareStatus.className)
 		var subPredicates: [NSPredicate] = []
 		subPredicates.append(\ActivityShareStatus.shareStatus == ActivityShareStatusType.inProgress.rawValue)

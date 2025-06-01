@@ -114,7 +114,7 @@ public class ActivityStorage {
 	public func importActivity(from url: URL, inPlace: Bool = false, analyse: Bool = true) async throws {
 		
 		guard FileManager.default.fileExists(atPath: url.path(percentEncoded: false)) == true else {
-			logger.debug("fit file \(url) does not exist stopping.")
+			logger.error("fit file \(url) does not exist stopping.")
 			throw ActivityError.fitFileNotFound
 		}
 		
