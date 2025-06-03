@@ -8,6 +8,7 @@
 import Foundation
 import CoreTransferable
 
+@available(iOS 17.0, *)
 extension Activity: Transferable {
 	
 	var url: URL? {
@@ -16,11 +17,19 @@ extension Activity: Transferable {
 		}
 		return ActivityStorage.activityURL(from: fileName)
 	}
-	
-	static public var transferRepresentation: some TransferRepresentation {
-		FileRepresentation(exportedContentType: .fit) { fitFile in
-			SentTransferredFile(fitFile.url!)
+		
+	public static var transferRepresentation: some TransferRepresentation {
+		DataRepresentation(exportedContentType: .data) {
+			fitFile in
+			if let url = fitFile.url {
+				return (try? Data(contentsOf: url)) ?? Data()
+			} else {
+				return Data()
+			}
+		}
+		.suggestedFileName {
+			fitFile in
+			return fitFile.fileName
 		}
 	}
-	
 }
