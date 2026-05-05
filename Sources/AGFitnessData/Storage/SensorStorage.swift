@@ -6,13 +6,13 @@
 //
 
 import Foundation
-import OSLog
+import AGCore
 import FitDataProtocol
 
 public class SensorStorage {
 
 	private var persistenceController: PersistenceController
-	private var logger = Logger(subsystem: "com.antokne.fitnessdata", category: "SensorStorage")
+	private var logger = AGLogger(subsystem: "com.antokne.fitnessdata", category: "SensorStorage")
 
 	public init(persistenceController: PersistenceController = PersistenceController.shared) {
 		self.persistenceController = persistenceController

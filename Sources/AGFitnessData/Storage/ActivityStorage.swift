@@ -9,7 +9,6 @@ import Foundation
 import CoreData
 import FitDataProtocol
 import AntMessageProtocol
-import OSLog
 import SwiftStrava
 import AGCore
 import AGFitCore
@@ -26,7 +25,7 @@ public var ActivityStorageImportActivityURLKey = "ActivityURL"
 
 public class ActivityStorage {
 	
-	private var logger = Logger(subsystem: "com.antokne.fitnessdata", category: "ActivityStorage")
+	private var logger = AGLogger(subsystem: "com.antokne.fitnessdata", category: "ActivityStorage")
 	
 	var viewContext = PersistenceController.shared.container.viewContext
 	
